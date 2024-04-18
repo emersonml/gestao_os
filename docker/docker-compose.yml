@@ -2,11 +2,16 @@ version: "3.9"
 services:
   nginx:
     image: nginx:alpine
-    container_name: nginx
+    container_name: mapos-esoft-nginx
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "../:/var/www/html"
       - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
+    networks:
+      zabbix-rede:
+        ipv4_address: 10.0.54.2
+      nginx_network:
+        ipv4_address: 10.0.2.54
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
     env_file:
@@ -18,7 +23,7 @@ services:
       - mysql
 
   php-fpm:
-    container_name: php-fpm
+    container_name: mapos-esoft-php-fpm
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -27,19 +32,28 @@ services:
       - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "../:/var/www/html"
+    networks:
+      zabbix-rede:
+        ipv4_address: 10.0.54.4
 
   composer:
-    container_name: composer
+    container_name: mapos-esoft-composer
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
     volumes:
       - "../:/app"
+    networks:
+      zabbix-rede:
+        ipv4_address: 10.0.54.5
     command: install --ignore-platform-reqs --no-scripts
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: mapos-esoft-phpmyadmin
+    networks:
+      zabbix-rede:
+        ipv4_address: 10.0.54.6
     ports:
       - "${PHP_MY_ADMIN_PORT}:80"
     environment:
@@ -53,7 +67,7 @@ services:
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    container_name: mysql
+    container_name: mapos-esoft-mysql
     restart: always
     env_file:
       - ".env"
@@ -62,7 +76,22 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_MAPOS_ROOT_PASSWORD}
       - MYSQL_USER=${MYSQL_MAPOS_USER}
       - MYSQL_PASSWORD=${MYSQL_MAPOS_PASSWORD}
+    networks:
+      zabbix-rede:
+       ipv4_address: 10.0.54.3
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
       - "./data/db/mysql:/var/lib/mysql"
+
+
+
+networks:
+  zabbix-rede:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.54.0/24
+          gateway: 10.0.54.1
+  nginx_network:
+    external: true

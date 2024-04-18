@@ -1,4 +1,16 @@
 
+
+FOI MODIFICADOS DO ORIGINAL
+    sudo chmod 757 application/; sudo chmod 777 updates/;
+    foi criado um pasta volume no docker-compose para o container MYSQL
+
+
+
+
+
+
+
+##############################################
 ![MapOS](https://raw.githubusercontent.com/RamonSilva20/mapos/master/assets/img/logo.png)
 
 ![version](https://img.shields.io/badge/version-4.45.0-blue.svg?longCache=true&style=flat-square)
