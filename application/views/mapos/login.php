@@ -60,7 +60,7 @@
                     <?= '<img src="' . base_url() . 'assets/img/logo-mapos-branco.png">'; ?>
                   </div>
                 </div>
-                <div id="mcell">Versão: <?= $this->config->item('app_version'); ?></div>
+                <div id="mcell"></div>
                 <div class="input-field">
                   <label class="fas fa-user" for="nome"></label>
                   <input id="email" name="email" type="text" placeholder="Email">
@@ -72,8 +72,8 @@
                 <div class="center">
                   <button id="btn-acessar">Acessar</button>
                 </div>
-                <div class="links-uteis"><a href="https://github.com/RamonSilva20/mapos">
-                    <p><?= date('Y'); ?> &copy; Ramon Silva</p>
+                <div class="links-uteis"><a href="https://github.com/emersonml">
+                    <p><?= date('Y'); ?> &copy; Emerson Marques</p>
                   </a>
                 </div>
                 <a href="#notification" id="call-modal" role="button" class="btn" data-toggle="modal" style="display: none ">notification</a>
