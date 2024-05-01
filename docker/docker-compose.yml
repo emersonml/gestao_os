@@ -2,7 +2,8 @@ version: "3.9"
 services:
   nginx:
     image: nginx:alpine
-    # container_name: mapos-esoft-nginx
+    container_name: mapos-esoft-nginx
+    hostname: nginx54
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "../:/var/www/html"
@@ -23,7 +24,8 @@ services:
       - mysql
 
   php-fpm:
-    # container_name: mapos-esoft-php-fpm
+    container_name: mapos-esoft-php-fpm
+    hostname: php-fpm54
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -37,7 +39,8 @@ services:
         ipv4_address: 10.0.54.4
 
   composer:
-    # container_name: mapos-esoft-composer
+    container_name: mapos-esoft-composer
+    hostname: composer54
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
@@ -52,7 +55,7 @@ services:
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    # container_name: mapos-esoft-mysql
+    container_name: mapos-esoft-mysql
     hostname: mysql54
     restart: always
     env_file:
