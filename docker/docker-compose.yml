@@ -38,18 +38,18 @@ services:
       network54:
         ipv4_address: 10.0.54.4
 
-  # composer54:
-  #   container_name: mapos-54-composer
-  #   hostname: composer
-  #   build:
-  #     context: ./etc/composer
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - "../:/app"
-  #   networks:
-  #     network54:
-  #       ipv4_address: 10.0.54.5
-  #   command: install --ignore-platform-reqs --no-scripts
+  composer54:
+    container_name: mapos-54-composer
+    hostname: composer54
+    build:
+      context: ./etc/composer
+      dockerfile: Dockerfile
+    volumes:
+      - "../:/app"
+    networks:
+      network54:
+        ipv4_address: 10.0.54.5
+    command: install --ignore-platform-reqs --no-scripts
 
 
 
