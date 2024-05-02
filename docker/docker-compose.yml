@@ -40,7 +40,7 @@ services:
 
   composer67:
     container_name: mapos-67-composer
-    hostname: composer
+    hostname: composer67
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
