@@ -11,7 +11,7 @@ services:
     networks:
       nginx_network:
         ipv4_address: 10.0.2.54
-      network:
+      network54:
         ipv4_address: 10.0.54.2
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
@@ -35,11 +35,11 @@ services:
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "../:/var/www/html"
     networks:
-      network:
+      network54:
         ipv4_address: 10.0.54.4
 
   composer:
-    container_name: mapos-esoft-composer
+    container_name: mapos-54-composer
     hostname: composer
     build:
       context: ./etc/composer
@@ -47,7 +47,7 @@ services:
     volumes:
       - "../:/app"
     networks:
-      network:
+      network54:
         ipv4_address: 10.0.54.5
     command: install --ignore-platform-reqs --no-scripts
 
@@ -55,8 +55,8 @@ services:
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    container_name: mapos-esoft-mysql
-    hostname: mysql
+    container_name: mapos-54-mysql
+    hostname: mysql54
     restart: always
     env_file:
       - ".env"
@@ -66,7 +66,7 @@ services:
       - MYSQL_USER=${MYSQL_MAPOS_USER}
       - MYSQL_PASSWORD=${MYSQL_MAPOS_PASSWORD}
     networks:
-      network:
+      network54:
        ipv4_address: 10.0.54.3
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
@@ -76,7 +76,7 @@ services:
 
 
 networks:
-  network:
+  network54:
     driver: bridge
     ipam:
       config:
