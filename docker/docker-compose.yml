@@ -1,9 +1,9 @@
 version: "3.9"
 services:
-  nginx:
+  54nginx:
     image: nginx:alpine
-    container_name: mapos-esoft-nginx
-    hostname: esoft_nginx
+    container_name: mapos-54-nginx
+    hostname: 54nginx
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "../:/var/www/html"
@@ -11,7 +11,7 @@ services:
     networks:
       nginx_network:
         ipv4_address: 10.0.2.54
-      esoft_network:
+      54network:
         ipv4_address: 10.0.54.2
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
@@ -20,12 +20,12 @@ services:
     command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     restart: always
     depends_on:
-      - php-fpm
-      - mysql
+      - 54php-fpm
+      - 54mysql
 
-  php-fpm:
-    container_name: mapos-esoft-php-fpm
-    hostname: esoft_php-fpm
+  54php-fpm:
+    container_name: mapos-54-php-fpm
+    hostname: 54php-fpm
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -35,28 +35,28 @@ services:
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "../:/var/www/html"
     networks:
-      esoft_network:
+      54network:
         ipv4_address: 10.0.54.4
 
-  composer:
+  54composer:
     container_name: mapos-esoft-composer
-    hostname: esoft_composer
+    hostname: 54composer
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
     volumes:
       - "../:/app"
     networks:
-      esoft_network:
+      54network:
         ipv4_address: 10.0.54.5
     command: install --ignore-platform-reqs --no-scripts
 
 
 
-  mysql:
+  54mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
     container_name: mapos-esoft-mysql
-    hostname: esoft_mysql
+    hostname: 54mysql
     restart: always
     env_file:
       - ".env"
@@ -66,7 +66,7 @@ services:
       - MYSQL_USER=${MYSQL_MAPOS_USER}
       - MYSQL_PASSWORD=${MYSQL_MAPOS_PASSWORD}
     networks:
-      esoft_network:
+      54network:
        ipv4_address: 10.0.54.3
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
@@ -76,7 +76,7 @@ services:
 
 
 networks:
-  esoft_network:
+  54network:
     driver: bridge
     ipam:
       config:
