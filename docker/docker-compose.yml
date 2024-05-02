@@ -1,8 +1,8 @@
 version: "3.9"
 services:
-  nginx67:
+  nginx54:
     image: nginx:alpine
-    container_name: mapos-67-nginx
+    container_name: mapos-54-nginx
     hostname: nginx
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
@@ -10,9 +10,9 @@ services:
       - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
     networks:
       nginx_network:
-        ipv4_address: 10.0.2.67
-      network67:
-        ipv4_address: 10.0.67.2
+        ipv4_address: 10.0.2.54
+      network54:
+        ipv4_address: 10.0.54.2
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
     env_file:
@@ -20,11 +20,11 @@ services:
     command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     restart: always
     depends_on:
-      - php-fpm67
-      - mysql67
+      - php-fpm54
+      - mysql54
 
-  php-fpm67:
-    container_name: mapos-67-php-fpm
+  php-fpm54:
+    container_name: mapos-54-php-fpm
     hostname: php-fpm
     build:
       context: ./etc/php
@@ -35,28 +35,28 @@ services:
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "../:/var/www/html"
     networks:
-      network67:
-        ipv4_address: 10.0.67.4
+      network54:
+        ipv4_address: 10.0.54.4
 
-  composer67:
-    container_name: mapos-67-composer
-    hostname: composer
-    build:
-      context: ./etc/composer
-      dockerfile: Dockerfile
-    volumes:
-      - "../:/app"
-    networks:
-      network67:
-        ipv4_address: 10.0.67.5
-    command: install --ignore-platform-reqs --no-scripts
+  # composer54:
+  #   container_name: mapos-54-composer
+  #   hostname: composer
+  #   build:
+  #     context: ./etc/composer
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - "../:/app"
+  #   networks:
+  #     network54:
+  #       ipv4_address: 10.0.54.5
+  #   command: install --ignore-platform-reqs --no-scripts
 
 
 
-  mysql67:
+  mysql54:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    container_name: mapos-67-mysql
-    hostname: mysql67
+    container_name: mapos-54-mysql
+    hostname: mysql54
     restart: always
     env_file:
       - ".env"
@@ -66,8 +66,8 @@ services:
       - MYSQL_USER=${MYSQL_MAPOS_USER}
       - MYSQL_PASSWORD=${MYSQL_MAPOS_PASSWORD}
     networks:
-      network67:
-       ipv4_address: 10.0.67.3
+      network54:
+       ipv4_address: 10.0.54.3
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
@@ -76,11 +76,11 @@ services:
 
 
 networks:
-  network67:
+  network54:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.0.67.0/24
-          gateway: 10.0.67.1
+        - subnet: 10.0.54.0/24
+          gateway: 10.0.54.1
   nginx_network:
     external: true
