@@ -1,4 +1,4 @@
-
+68
 #### NO SERVIDOR
    ## PARA QUE SEJA GERADO O ARQUEIVO .env na hora da instalação
     sudo chmod 757 application/; 
