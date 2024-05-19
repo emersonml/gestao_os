@@ -1,18 +1,11 @@
 version: "3.9"
 services:
-  nginx67:
+  nginx:
     image: nginx:alpine
-    container_name: mapos-67-nginx
     hostname: nginx
     volumes:
-      - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-      - "../:/var/www/html"
-      - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
-    networks:
-      nginx_network:
-        ipv4_address: 10.0.2.67
-      network67:
-        ipv4_address: 10.0.67.2
+      - "/volume/mapos/000/etc/nginx/conf.d/:/etc/nginx/conf.d/"
+      - "/volume/mapos/000/app/:/var/www/html"
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
     env_file:
@@ -20,43 +13,33 @@ services:
     command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     restart: always
     depends_on:
-      - php-fpm67
-      - mysql67
+      - php-fpm
+      - mysql
 
-  php-fpm67:
-    container_name: mapos-67-php-fpm
+  php-fpm:
     hostname: php-fpm
     build:
-      context: ./etc/php
+      context: /volume/mapos/000/etc/php
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
-      - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
-      - "../:/var/www/html"
-    networks:
-      network67:
-        ipv4_address: 10.0.67.4
+      - "/volume/mapos/000/etc/php/conf.d/:/usr/local/etc/php/conf.d/"
+      - "/volume/mapos/000/app/:/var/www/html"
 
-  composer67:
-    container_name: mapos-67-composer
-    hostname: composer67
+  composer:
+    hostname: composer
     build:
-      context: ./etc/composer
+      context: /volume/mapos/000/etc/composer
       dockerfile: Dockerfile
     volumes:
-      - "../:/app"
-    networks:
-      network67:
-        ipv4_address: 10.0.67.5
+      - "/volume/mapos/000/app/:/app"
     command: install --ignore-platform-reqs --no-scripts
 
 
 
-  mysql67:
+  mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    container_name: mapos-67-mysql
-    hostname: mysql67
+    hostname: mysql
     restart: always
     env_file:
       - ".env"
@@ -65,22 +48,8 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_MAPOS_ROOT_PASSWORD}
       - MYSQL_USER=${MYSQL_MAPOS_USER}
       - MYSQL_PASSWORD=${MYSQL_MAPOS_PASSWORD}
-    networks:
-      network67:
-       ipv4_address: 10.0.67.3
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "./data/db/mysql:/var/lib/mysql"
+      - "/volume/mapos/000/var/mysql:/var/lib/mysql"
 
-
-
-networks:
-  network67:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.0.67.0/24
-          gateway: 10.0.67.1
-  nginx_network:
-    external: true
