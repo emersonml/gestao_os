@@ -4,8 +4,13 @@ sudo chmod 777 README.md; sudo chmod 777 updates/; sudo chmod 777 docker/.env; s
 sudo chmod 757 application/; 
     
 
+Deployment error
+Failed to deploy a stack:
+unable to prepare context: path "volume/mapos/000/etc/php"
+not found
 
-
+Deployment error
+Failed to deploy a stack: stat/data/compose/4/docker-compose.yml: no such file or directory
 
 
 

@@ -23,8 +23,10 @@ services:
       dockerfile: Dockerfile
     restart: always
     volumes:
-      - "/volume/mapos/000/etc/php/conf.d/:/usr/local/etc/php/conf.d/"
+      - "/volume/mapos/000/etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "/volume/mapos/000/etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "/volume/mapos/000/app/:/var/www/html"
+
 
   composer:
     hostname: composer
