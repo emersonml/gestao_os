@@ -52,6 +52,6 @@ services:
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "/volumes/gestao-os/db_mysql/_data:/var/lib/mysql"
+      - "/volumes/gestaoos/db_mysql/_data:/var/lib/mysql"
 
 
