@@ -2,7 +2,7 @@ version: "3.9"
 services:
   nginx:
     image: nginx:alpine
-    hostname: nginx
+    hostname: nginx-70
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "../:/var/www/html"
@@ -16,10 +16,10 @@ services:
     restart: always
     depends_on:
       - php-fpm
-      - mysql
+      - db
 
   php-fpm:
-    hostname: php-fpm
+    hostname: php-fpm-70
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -30,7 +30,7 @@ services:
       - "../:/var/www/html"
 
   composer:
-    hostname: composer
+    hostname: composer-70
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
@@ -38,11 +38,9 @@ services:
       - "../:/app"
     command: install --ignore-platform-reqs --no-scripts
 
-
-
-  mysql:
+  db:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    hostname: mysql
+    hostname: mysql-70
     restart: always
     env_file:
       - ".env"
@@ -54,6 +52,6 @@ services:
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "./data/db/mysql:/var/lib/mysql"
+      - "/volumes/gestao-os/db_mysql/_data:/var/lib/mysql"
 
 
