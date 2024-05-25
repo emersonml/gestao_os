@@ -16,7 +16,7 @@ services:
     restart: always
     depends_on:
       - php-fpm
-      - db
+      - mysql
 
   php-fpm:
     hostname: php-fpm-70
@@ -38,7 +38,7 @@ services:
       - "../:/app"
     command: install --ignore-platform-reqs --no-scripts
 
-  db:
+  mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
     hostname: mysql-70
     restart: always
