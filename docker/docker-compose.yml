@@ -21,7 +21,6 @@ services:
 
   php-fpm:
     container_name: gestaoOS-${NUMAPP}-php-fpm
-    hostname: php-fpm-${NUMAPP}
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -33,7 +32,6 @@ services:
 
   composer:
     container_name: gestaoOS-${NUMAPP}-composer
-    hostname: composer-${NUMAPP}
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
@@ -44,7 +42,6 @@ services:
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
     container_name: gestaoOS-${NUMAPP}-mysql
-    hostname: mysql-${NUMAPP}
     restart: always
     env_file:
       - ".env"
