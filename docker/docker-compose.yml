@@ -2,7 +2,7 @@
 
 networks:
   default:
-    name: ${NET}
+    name: gestaoos-${INSTANCIA}-${NUM_INSTANCIA}
     driver: bridge
 
 
