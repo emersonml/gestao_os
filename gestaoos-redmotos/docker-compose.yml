@@ -44,6 +44,7 @@ services:
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
     container_name: gestaoOS-${APP}-mysql
+    hostname: mysql-${APP}
     restart: always
     env_file:
       - ".env"
@@ -58,5 +59,5 @@ services:
       - "/volumes/gestaoos/${APP}/db_mysql/_data:/var/lib/mysql"
     
 
-networks:
-  gestaoos-${NET}:
+# networks:
+#   gestaoos-${NET}:
