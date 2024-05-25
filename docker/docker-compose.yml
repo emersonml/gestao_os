@@ -31,15 +31,15 @@ services:
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "../:/var/www/html"
 
-  composer:
-    container_name: gestaoOS-${NUMAPP}-composer
-    hostname: composer-${NUMAPP}
-    build:
-      context: ./etc/composer
-      dockerfile: Dockerfile
-    volumes:
-      - "../:/app"
-    command: install --ignore-platform-reqs --no-scripts
+  # composer:
+  #   container_name: gestaoOS-${NUMAPP}-composer
+  #   hostname: composer-${NUMAPP}
+  #   build:
+  #     context: ./etc/composer
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - "../:/app"
+  #   command: install --ignore-platform-reqs --no-scripts
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
