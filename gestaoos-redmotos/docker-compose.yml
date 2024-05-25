@@ -44,6 +44,7 @@ services:
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
     container_name: gestaoOS-${APP}-mysql
+    hostname: mysql-${APP}
     restart: always
     env_file:
       - ".env"
