@@ -1,9 +1,9 @@
 
 
-networks:
-  default:
-    name: gestaoos-${INSTANCIA}-${NUM_INSTANCIA}
-    driver: bridge
+# networks:
+#   default:
+#     name: gestaoos-${INSTANCIA}-${NUM_INSTANCIA}
+#     driver: bridge
 
 
 
@@ -25,8 +25,8 @@ services:
     depends_on:
       - php-fpm
       - mysql
-    networks:
-      - default
+    # networks:
+    #   - default
 
   php-fpm:
     container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-php-fpm
@@ -38,8 +38,8 @@ services:
       - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "./app/:/var/www/html"
-    networks:
-      - default
+    # networks:
+    #   - default
 
   composer:
     container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-composer
@@ -49,8 +49,8 @@ services:
     volumes:
       - "./app/:/app"
     command: install --ignore-platform-reqs --no-scripts
-    networks:
-      - default
+    # networks:
+    #   - default
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
@@ -67,6 +67,6 @@ services:
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "/volumes/gestaoos/${INSTANCIA}-${NUM_INSTANCIA}/db_mysql/_data:/var/lib/mysql"
-    networks:
-      - default
+      - "/srv/volumes/gestaoos/${INSTANCIA}-${NUM_INSTANCIA}/db_mysql/_data:/var/lib/mysql"
+    # networks:
+    #   - default
