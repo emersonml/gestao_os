@@ -67,6 +67,6 @@ services:
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "/volumes/gestaoos/${INSTANCIA}-${NUM_INSTANCIA}/db_mysql/_data:/var/lib/mysql"
+      - "/srv/volumes/gestaoos/${INSTANCIA}-${NUM_INSTANCIA}/db_mysql/_data:/var/lib/mysql"
     # networks:
     #   - default
