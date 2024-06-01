@@ -1,26 +1,35 @@
-version: "3.9"
+
+
+# networks:
+#   default:
+#     name: gestaoos-${INSTANCIA}-${NUM_INSTANCIA}
+#     driver: bridge
+
+
+
 services:
   nginx:
     image: nginx:alpine
-    container_name: gestaoOS-${APP}-nginx
-    hostname: nginx-${APP}
+    container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-nginx
+    hostname: ${INSTANCIA}
     volumes:
       - "./etc/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-      - "../:/var/www/html"
+      - "./app/:/var/www/html"
       - "./etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
     env_file:
-      - ".env"
+      - ".env-${INSTANCIA}"
     command: /bin/sh -c "envsubst '$$NGINX_HOST $$NGINX_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     restart: always
     depends_on:
       - php-fpm
       - mysql
-    
+    # networks:
+    #   - default
 
   php-fpm:
-    container_name: gestaoOS-${APP}-php-fpm
+    container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-php-fpm
     build:
       context: ./etc/php
       dockerfile: Dockerfile
@@ -28,26 +37,28 @@ services:
     volumes:
       - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
-      - "../:/var/www/html"
-    
+      - "./app/:/var/www/html"
+    # networks:
+    #   - default
 
   composer:
-    container_name: gestaoOS-${APP}-composer
+    container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-composer
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
     volumes:
-      - "../:/app"
+      - "./app/:/app"
     command: install --ignore-platform-reqs --no-scripts
-    
+    # networks:
+    #   - default
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
-    container_name: gestaoOS-${APP}-mysql
-    hostname: mysql-${APP}
+    container_name: gestaoOS-${INSTANCIA}-${NUM_INSTANCIA}-mysql
+    hostname: mysql${NUM_INSTANCIA}
     restart: always
     env_file:
-      - ".env"
+      - ".env-${INSTANCIA}"
     environment:
       - MYSQL_DATABASE=${MYSQL_MAPOS_DATABASE}
       - MYSQL_ROOT_PASSWORD=${MYSQL_MAPOS_ROOT_PASSWORD}
@@ -56,8 +67,6 @@ services:
     ports:
       - "${MYSQL_MAPOS_PORT}:3306"
     volumes:
-      - "/volumes/gestaoos/${APP}/db_mysql/_data:/var/lib/mysql"
-    
-
-# networks:
-#   gestaoos-${NET}:
+      - "/srv/volumes/gestaoos/${INSTANCIA}-${NUM_INSTANCIA}/db_mysql/_data:/var/lib/mysql"
+    # networks:
+    #   - default
