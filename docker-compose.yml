@@ -31,7 +31,7 @@ services:
       - "./app/:/var/www/html"
   
   composer:
-    container_name: gestaoOS-${INSTANCIA}-composer
+    container_name: ${INSTANCIA}-gestaoos-composer
     build:
       context: ./etc/composer
       dockerfile: Dockerfile
