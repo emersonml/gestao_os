@@ -29,6 +29,15 @@ services:
       - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
       - "./etc/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "./app/:/var/www/html"
+  
+  composer:
+    container_name: gestaoOS-${INSTANCIA}-composer
+    build:
+      context: ./etc/composer
+      dockerfile: Dockerfile
+    volumes:
+      - "./app/:/app"
+    command: install --ignore-platform-reqs --no-scripts
 
   mysql:
     image: mysql:${MYSQL_MAPOS_VERSION}
